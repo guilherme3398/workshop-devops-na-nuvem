@@ -13,7 +13,7 @@ resource "aws_iam_role" "github_iam_role" {
         }
         Condition = {
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:guilherme3398/workshop-devops-na-nuvem:*"
+            "token.actions.githubusercontent.com:sub" = "repo:guilherme3398/workshop-devops-na-nuvem-gitops:*"
           }
         },
         StringEquals = {
