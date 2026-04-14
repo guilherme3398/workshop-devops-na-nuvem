@@ -50,6 +50,7 @@ jobs:
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
+          sed -i "s|image:.*|image: $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/ingress-deployment.yml
           cd gitops-repo
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
