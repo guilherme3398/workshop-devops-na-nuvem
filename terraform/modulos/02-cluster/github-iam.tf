@@ -13,15 +13,13 @@ resource "aws_iam_role" "github_iam_role" {
         }
         Condition = {
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:guilherme3398/workshop-devops-na-nuvem-gitops:*"
+            "token.actions.githubusercontent.com:sub" = "repo:guilherme3398/workshop-devops-na-nuvem:*"
           }
-        },
-        StringEquals = {
-          "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
         }
-      }
-
-    ]
+    }]
   })
 }
 
@@ -35,26 +33,26 @@ resource "aws_iam_policy" "github_iam_policy" {
     Statement = [
       {
         Effect = "Allow"
-        Sid = "GetAuthorizationToken",
+        Sid    = "GetAuthorizationToken",
         Action = [
           "ecr:GetAuthorizationToken"
         ]
-        Resource = "*"        
+        Resource = "*"
       },
-        {
+      {
         Effect = "Allow"
-        Sid= "AllowPushPull",
+        Sid    = "AllowPushPull",
         Action = [
-           "ecr:BatchGetImage",
-            "ecr:BatchCheckLayerAvailability",
-            "ecr:CompleteLayerUpload",
-            "ecr:GetDownloadUrlForLayer",
-            "ecr:InitiateLayerUpload",
-            "ecr:PutImage",
-            "ecr:UploadLayerPart"
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:CompleteLayerUpload",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
         ]
-        Resource = aws_ecr_repository.this[*].arn  #CRIAR RECURSO       
-      },     
+        Resource = aws_ecr_repository.dnn_ecr.arn
+      },
     ]
   })
 }
@@ -62,5 +60,5 @@ resource "aws_iam_policy" "github_iam_policy" {
 
 resource "aws_iam_role_policy_attachment" "dnn_github_role_attach" {
   policy_arn = aws_iam_policy.github_iam_policy.arn
-  role       = aws_iam_role.github_iam_role.name 
+  role       = aws_iam_role.github_iam_role.name
 }

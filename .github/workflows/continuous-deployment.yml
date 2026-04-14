@@ -24,8 +24,8 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v6.1.0
       with:
-        aws-region: us-east-1
-        role-to-assume: arn:aws:iam::393736331262:role/dnn-github-role #HERDAR DO RECURSO
+        aws-region: $AWS_REGION
+        role-to-assume: $AWS_GITHUB_IAM
      
     
     - name: Login to Amazon ECR
@@ -44,11 +44,13 @@ jobs:
       with:
         repository: 'guilherme3398/workshop-devops-na-nuvem-gitops'
         token: ${{ secrets.PAT }}
+        path: gitops-repo
 
     - name: Image Push
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
+          cd gitops-repo
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
